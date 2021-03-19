@@ -3,7 +3,15 @@
 @section('title')
     Materials
 @endsection
-
+@if(auth()->user()->isAdmin(auth()->user()->id) || auth()->user()->isApprover(auth()->user()->id))
+    @php
+        $addUrl = route('materials.create');
+    @endphp
+@else
+    @php
+        $addUrl = '#';
+    @endphp
+@endif
 <section class="hero is-white borderBtmLight">
     <nav class="level">
         @include('component.title_set', [
@@ -16,7 +24,7 @@
             'spShowButtonSet' => true,
             'spAddUrl' => null,
             'spTitle' => 'Materials',
-            'spAddUrl' => route('materials.create'),
+            'spAddUrl' => $addUrl,
             'spAllData' => route('materials.index'),
             'spSearchData' => route('materials.search'),
         ])
@@ -63,11 +71,13 @@
                                            title="View user data">
                                             <span class="icon is-small"><i class="fas fa-eye"></i></span>
                                         </a>
-                                        <a href="{{ route('materials.edit', $material->id) }}"
-                                           class="level-item"
-                                           title="View all transaction">
-                                            <span class="icon is-info is-small"><i class="fas fa-edit"></i></span>
-                                        </a>
+                                        @if(auth()->user()->isAdmin(auth()->user()->id) || auth()->user()->isApprover(auth()->user()->id))
+                                            <a href="{{ route('materials.edit', $material->id) }}"
+                                            class="level-item"
+                                            title="View all transaction">
+                                                <span class="icon is-info is-small"><i class="fas fa-edit"></i></span>
+                                            </a>
+                                        @endif
 
                                         {{--                                        {!! delete_data('materials.destroy',  $material->id) !!}--}}
                                     </div>
