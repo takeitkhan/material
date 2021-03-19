@@ -22,6 +22,9 @@
 
         @include('component.filter_set', [
             'spShowFilterSet' => true,
+            'spAddUrl' => route('materials.create'),
+            'spAllData' => route('materials.index'),
+            'spSearchData' => route('materials.search'),
             'spPlaceholder' => 'Search materials...',
             'spMessage' => $message = $message ?? NULl,
             'spStatus' => $status = $status ?? NULL

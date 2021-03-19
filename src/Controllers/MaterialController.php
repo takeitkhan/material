@@ -140,4 +140,22 @@ class MaterialController extends Controller
         $this->material->delete($id);
         return redirect()->back()->with(['status' => 1, 'message' => 'Successfully deleted']);
     }
+
+    /**
+     * Search 
+     * */
+    public function search(Request $request) {
+
+        if(!empty($request->key)) {
+            $default = [
+            'search_key' => $request->key ?? '',
+            'limit' => 10,
+            'offset' => 0
+            ];        
+            $materials = $this->material->getDataByFilter($default);            
+        } else {
+            $materials = $this->material->getAll();        
+        }
+        return view('material::index', ['materials' => $materials]);        
+    }
 }

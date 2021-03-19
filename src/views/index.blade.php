@@ -15,6 +15,7 @@
         @include('component.button_set', [
             'spShowButtonSet' => true,
             'spAddUrl' => null,
+            'spTitle' => 'Materials',
             'spAddUrl' => route('materials.create'),
             'spAllData' => route('materials.index'),
             'spSearchData' => route('materials.search'),
@@ -22,6 +23,9 @@
 
         @include('component.filter_set', [
             'spShowFilterSet' => true,
+            'spAddUrl' => route('materials.create'),
+            'spAllData' => route('materials.index'),
+            'spSearchData' => route('materials.search'),
             'spPlaceholder' => 'Search materials...',
             'spMessage' => $message = $message ?? NULl,
             'spStatus' => $status = $status ?? NULL
