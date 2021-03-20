@@ -64,11 +64,11 @@
             </div>
         </div>
     </div>
-	
+
 	@php
-		$daterange = request()->get('daterange');		
+		$daterange = request()->get('daterange');
 		if(!empty(request()->get('daterange'))) {
-			$dates = explode(' - ', $daterange);		
+			$dates = explode(' - ', $daterange);
 			$start = $dates[0];
 			$end = $dates[1];
 			$materials = \Tritiyo\Task\Models\TaskMaterial::leftJoin('tasks', 'tasks.id', 'tasks_material.task_id')
@@ -81,18 +81,18 @@
 					->whereBetween('tasks.task_for', [ date('Y-m-d'), date('Y-m-d') ])
 					->get();
 		}
-		
+
 		//dd($materials);
     @endphp
-    
+
 	<div class="card tile is-child" style="margin-top: 15px !important;">
 		<header class="card-header">
 			<p class="card-header-title">
 				<span class="icon"><i class="fas fa-tasks default"></i></span>
 				Material Used
-			
+
 				{{ Form::open(array('url' => route('materials.show', $material->id), 'method' => 'GET', 'value' => 'PATCH', 'class' => 'dateFilter',  'id' => 'tasks_advanced_search', 'autocomplete' => 'off')) }}
-					<div class="columns">						
+					<div class="columns">
 						<div class="column">
 							<input class="input is-small" type="text" name="daterange" value="" />
 						</div>
@@ -111,33 +111,40 @@
 							<th title="Task date" width="20%">Task Name</th>
 							<th title="Task date" width="10%">Task date</th>
 							<th title="Task head">Site Head</th>
+							<th title="Project Name">Project Name</th>
 							<th title="Material Amount">Material Amount</th>
 							<th title="Material Note">Material Note</th>
 						</tr>
 						@php
 							$in_total = [];
 						@endphp
-						
+
 						@foreach($materials as $material)
 							<tr>
 								<td title="Task ID">
 									<a href="{{ route('tasks.show', $material->task_id) }}" target="_blank">
-										{{ \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->task_name }}                                        
+										{{ \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->task_name }}
 									</a>
 								</td>
 								<td title="Task date">
 									{{ \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->task_for }}
 								</td>
 								<td title="Task head">
-									{{ \App\Models\User::where('id', \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->site_head)->first()->name }}                                    
+									{{ \App\Models\User::where('id', \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->site_head)->first()->name }}
 								</td>
+                                <td title="Project Name">
+                                    <a href="{{ route('projects.show', \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->project_id) }}"
+                                       target="_blank">
+                                        {{ \Tritiyo\Project\Models\Project::where('id', \Tritiyo\Task\Models\Task::where('id', $material->task_id)->first()->project_id)->first()->name }}
+                                    </a>
+                                </td>
 								<td title="Material Rent">
 									{{ $in_total[] = $material->material_amount }}
 								</td>
 								<td title="Resource Used">
 									{{ $material->material_note }}
 								</td>
-							</tr>                            
+							</tr>
 						@endforeach
 						<tr>
 							<td colspan="4">
@@ -149,33 +156,33 @@
 						</tr>
 					</table>
 				@else
-					
+
 					<table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
 						<tr>
-							<td title="Task date" width="20%">No material used based on your selected date range.</th>						
+							<td title="Task date" width="20%">No material used based on your selected date range.</th>
 						</tr>
 					</table>
-		
+
 				@endif
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 @endsection
 
 @section('column_right')
-   
+
 @endsection
-@section('cusjs')    
-    <script type="text/javascript" 
+@section('cusjs')
+    <script type="text/javascript"
     src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" 
+    <script type="text/javascript"
     src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" 
+    <script type="text/javascript"
     src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    
+
 
 	<script>
 	$(function() {
