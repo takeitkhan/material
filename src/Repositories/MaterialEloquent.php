@@ -34,7 +34,7 @@ class MaterialEloquent implements MaterialInterface
             'limit' => 10,
             'offset' => 0
         ];
-        $no = array_merge($default, $options);         
+        $no = array_merge($default, $options);
 
         if (!empty($no['limit'])) {
             $limit = $no['limit'];

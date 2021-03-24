@@ -59,7 +59,7 @@
                                         </strong>
                                         <br/>
                                         <small>
-                                            <strong>Unit: </strong> {{ $material->unit }},
+                                            <strong>Unit: </strong> {{ $material->unit }}
                                         </small>
                                         <br/>
                                     </p>
@@ -89,7 +89,11 @@
             @endforeach
         </div>
         <div class="pagination_wrap pagination is-centered">
-            {{$materials->links('pagination::bootstrap-4')}}
+            @if(Request::get('key'))
+                {{ $materials->appends(['key' => Request::get('key')])->links('pagination::bootstrap-4') }}
+            @else
+                {{ $materials->links('pagination::bootstrap-4')}}
+            @endif
         </div>
     @endif
 @endsection
